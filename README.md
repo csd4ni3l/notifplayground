@@ -1,0 +1,2 @@
+Games made inside notifications! Currently includes Flappy Bird, Maze, Pong, Space Invaders and a WPS test!
+I haven't checked if it works on all platforms, only on Linux, but it still might be unusable due to notifications not being cross-platform.
