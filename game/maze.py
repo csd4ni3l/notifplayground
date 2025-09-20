@@ -1,10 +1,13 @@
 import arcade, arcade.gui, time, random
+
 from plyer import notification
+
 from utils.constants import ROWS, COLS
 
 class Game(arcade.gui.UIView):
     def __init__(self, pypresence_client):
         super().__init__()
+        
         self.pypresence_client = pypresence_client
         self.pypresence_client.update(state="Solving a maze inside notifications!")
 

@@ -52,25 +52,28 @@ class Main(arcade.gui.UIView):
 
         self.title_label = self.box.add(arcade.gui.UILabel(text="NotifPlayground", font_name="Roboto", font_size=48))
 
-        self.snake_button = self.box.add(arcade.gui.UITextureButton(text="Snake", texture=button_texture, texture_hovered=button_hovered_texture, width=self.window.width / 2, height=self.window.height / 10, style=big_button_style))
+        self.snake_button = self.box.add(arcade.gui.UITextureButton(text="Snake", texture=button_texture, texture_hovered=button_hovered_texture, width=self.window.width / 2, height=self.window.height / 12, style=big_button_style))
         self.snake_button.on_click = lambda event: self.snake()
 
-        self.flappy_bird_button = self.box.add(arcade.gui.UITextureButton(text="Flappy Bird", texture=button_texture, texture_hovered=button_hovered_texture, width=self.window.width / 2, height=self.window.height / 10, style=big_button_style))
+        self.flappy_bird_button = self.box.add(arcade.gui.UITextureButton(text="Flappy Bird", texture=button_texture, texture_hovered=button_hovered_texture, width=self.window.width / 2, height=self.window.height / 12, style=big_button_style))
         self.flappy_bird_button.on_click = lambda event: self.flappy_bird()
 
-        self.pong_button = self.box.add(arcade.gui.UITextureButton(text="Pong", texture=button_texture, texture_hovered=button_hovered_texture, width=self.window.width / 2, height=self.window.height / 10, style=big_button_style))
+        self.pong_button = self.box.add(arcade.gui.UITextureButton(text="Pong", texture=button_texture, texture_hovered=button_hovered_texture, width=self.window.width / 2, height=self.window.height / 12, style=big_button_style))
         self.pong_button.on_click = lambda event: self.pong()
 
-        self.space_invaders_button = self.box.add(arcade.gui.UITextureButton(text="Space Invaders", texture=button_texture, texture_hovered=button_hovered_texture, width=self.window.width / 2, height=self.window.height / 10, style=big_button_style))
+        self.space_invaders_button = self.box.add(arcade.gui.UITextureButton(text="Space Invaders", texture=button_texture, texture_hovered=button_hovered_texture, width=self.window.width / 2, height=self.window.height / 12, style=big_button_style))
         self.space_invaders_button.on_click = lambda event: self.space_invaders()
 
-        self.wps_test_button = self.box.add(arcade.gui.UITextureButton(text="WPS Test", texture=button_texture, texture_hovered=button_hovered_texture, width=self.window.width / 2, height=self.window.height / 10, style=big_button_style))
+        self.wps_test_button = self.box.add(arcade.gui.UITextureButton(text="WPS Test", texture=button_texture, texture_hovered=button_hovered_texture, width=self.window.width / 2, height=self.window.height / 12, style=big_button_style))
         self.wps_test_button.on_click = lambda event: self.wps_test()
 
-        self.maze_button = self.box.add(arcade.gui.UITextureButton(text="Maze", texture=button_texture, texture_hovered=button_hovered_texture, width=self.window.width / 2, height=self.window.height / 10, style=big_button_style))
+        self.maze_button = self.box.add(arcade.gui.UITextureButton(text="Maze", texture=button_texture, texture_hovered=button_hovered_texture, width=self.window.width / 2, height=self.window.height / 12, style=big_button_style))
         self.maze_button.on_click = lambda event: self.maze()
 
-        self.settings_button = self.box.add(arcade.gui.UITextureButton(text="Settings", texture=button_texture, texture_hovered=button_hovered_texture, width=self.window.width / 2, height=self.window.height / 10, style=big_button_style))
+        self.tetris_button = self.box.add(arcade.gui.UITextureButton(text="Tetris", texture=button_texture, texture_hovered=button_hovered_texture, width=self.window.width / 2, height=self.window.height / 12, style=big_button_style))
+        self.tetris_button.on_click = lambda event: self.tetris()
+
+        self.settings_button = self.box.add(arcade.gui.UITextureButton(text="Settings", texture=button_texture, texture_hovered=button_hovered_texture, width=self.window.width / 2, height=self.window.height / 12, style=big_button_style))
         self.settings_button.on_click = lambda event: self.settings()
 
     def pong(self):
@@ -95,6 +98,10 @@ class Main(arcade.gui.UIView):
 
     def maze(self):
         from game.maze import Game
+        self.window.show_view(Game(self.pypresence_client))
+
+    def tetris(self):
+        from game.tetris import Game
         self.window.show_view(Game(self.pypresence_client))
 
     def settings(self):

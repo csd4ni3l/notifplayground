@@ -12,7 +12,7 @@ class Game(arcade.gui.UIView):
         self.pypresence_client.update(state="Playing Snake inside notifications!")
 
         self.anchor = self.add_widget(arcade.gui.UIAnchorLayout(size_hint=(1, 1)))
-        self.info_label = self.anchor.add(arcade.gui.UILabel("Press keys inside this window to interact with the game.\nYou can see the game inside notifications.", font_size=24, multiline=True), anchor_x="center", anchor_y="center")
+        self.info_label = self.anchor.add(arcade.gui.UILabel("Use arrow keys or WASD to move.\nYou can see the game inside notifications.", font_size=24, multiline=True), anchor_x="center", anchor_y="center")
 
         self.direction = "right"
         self.running = True

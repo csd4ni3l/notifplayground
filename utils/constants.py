@@ -7,8 +7,21 @@ menu_background_color = (30, 30, 47)
 log_dir = 'logs'
 discord_presence_id = 1417184787936055336
 
-ROWS = 30
-COLS = 35
+ROWS = 20
+COLS = 25
+
+TETRIS_SHAPES = {
+    "I":      [(0, 0), (1, 0), (2, 0), (3, 0)],
+    "I_R1":   [(0, 0), (0, 1), (0, 2), (0, 3)],
+    "O":      [(0, 0), (1, 0), (0, 1), (1, 1)],
+    "L":      [(0, 0), (0, 1), (0, 2), (1, 2)],
+    "L_R1":   [(0, 1), (1, 1), (2, 1), (2, 0)],
+    "L_R2":   [(1, 0), (1, 1), (1, 2), (0, 0)],
+    "L_R3":   [(0, 0), (1, 0), (2, 0), (0, 1)],
+    "LINE1": [(0, 0)],
+    "LINE2": [(0, 0), (1, 0)],
+    "LINE3": [(0, 0), (1, 0), (2, 0)],
+}
 
 button_style = {'normal': UITextureButtonStyle(font_name="Roboto", font_color=arcade.color.BLACK), 'hover': UITextureButtonStyle(font_name="Roboto", font_color=arcade.color.BLACK),
                 'press': UITextureButtonStyle(font_name="Roboto", font_color=arcade.color.BLACK), 'disabled': UITextureButtonStyle(font_name="Roboto", font_color=arcade.color.BLACK)}
