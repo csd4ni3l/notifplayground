@@ -120,14 +120,15 @@ class Settings(arcade.gui.UIView):
                     else:
                         label_text = f"FPS Limit: {self.settings_dict.get(setting_dict['config_key'], setting_dict['default'])}"
                 else:
-                    label_text = f"{setting}: {int(self.settings_dict.get(setting_dict['config_key'], setting_dict['default']))}"
+                    label_text = f"{setting}: {int(self.settings_dict.get(setting_dict['config_key'], setting_dict['default'])) if setting_dict.get('step', 1) >= 1 else self.settings_dict.get(setting_dict['config_key'], setting_dict['default'])}"
 
                 label.text = label_text
 
                 self.slider_labels[setting] = label
 
-                slider = arcade.gui.UISlider(width=400, height=50, value=self.settings_dict.get(setting_dict["config_key"], setting_dict["default"]), min_value=setting_dict['min'], max_value=setting_dict['max'], style=slider_style)
+                slider = arcade.gui.UISlider(width=400, height=50, step=setting_dict.get("step", 1), value=self.settings_dict.get(setting_dict["config_key"], setting_dict["default"]), min_value=setting_dict['min'], max_value=setting_dict['max'], style=slider_style)
                 slider.on_change = lambda _, setting=setting, slider=slider: self.update(setting, slider.value, "slider")
+                slider._render_steps = lambda surface: None
 
                 self.sliders[setting] = slider
                 self.value_layout.add(slider)
@@ -205,7 +206,6 @@ class Settings(arcade.gui.UIView):
             file.write(json.dumps(self.settings_dict, indent=4))
 
     def update(self, setting=None, button_state=None, setting_type="bool"):
-        setting_dict = settings[self.current_category][setting]
         config_key = settings[self.current_category][setting]["config_key"]
 
         if setting_type == "option":
@@ -222,7 +222,7 @@ class Settings(arcade.gui.UIView):
                 self.set_normal_style(self.on_radiobuttons[setting])
 
         elif setting_type == "slider":
-            new_value = int(button_state)
+            new_value = int(button_state) if settings[self.current_category][setting].get("step", 1) >= 1 else button_state
 
             self.modified_settings[config_key] = new_value
             self.sliders[setting].value = new_value

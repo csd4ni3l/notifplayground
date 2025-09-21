@@ -2,8 +2,6 @@ import arcade, arcade.gui, time, random, os, json
 
 from plyer import notification
 
-from utils.constants import ROWS, COLS
-
 class Game(arcade.gui.UIView):
     def __init__(self, pypresence_client):
         super().__init__()
@@ -17,14 +15,17 @@ class Game(arcade.gui.UIView):
         self.running = True
         self.last_update_time = time.perf_counter()
 
-        self.ball_position = arcade.math.Vec2(int(COLS / 2), int(ROWS / 4))
+        with open("settings.json", "r") as file:
+            self.settings = json.load(file)
+
+        self.ball_position = arcade.math.Vec2(int(self.settings.get("notification_cols", 25) / 2), int(self.settings.get("notification_rows", 20) / 4))
         
         self.ball_direction = arcade.math.Vec2(*random.choice([(-1, 1), (1, 1), (-1, 1), (-1, -1)]))
 
-        self.paddle_a_position = arcade.math.Vec2(0, int(ROWS / 4))
+        self.paddle_a_position = arcade.math.Vec2(0, int(self.settings.get("notification_rows", 20) / 4))
         self.paddle_a_direction = 0
 
-        self.paddle_b_position = arcade.math.Vec2(COLS - 1, int(ROWS / 4))
+        self.paddle_b_position = arcade.math.Vec2(self.settings.get("notification_cols", 25) - 1, int(self.settings.get("notification_rows", 20) / 4))
         self.paddle_b_direction = 0
 
         self.score_a = 0
@@ -42,7 +43,7 @@ class Game(arcade.gui.UIView):
         self.high_score = self.data["pong"]["high_score"]
 
     def on_update(self, delta_time):
-        if self.running and time.perf_counter() - self.last_update_time >= 0.4:
+        if self.running and time.perf_counter() - self.last_update_time >= self.settings.get("notification_timeout", 0.4):
             self.last_update_time = time.perf_counter()
 
             self.ball_position += self.ball_direction
@@ -68,34 +69,34 @@ class Game(arcade.gui.UIView):
 
             else:
                 if self.ball_position.x <= 0:
-                    if self.ball_position.y <= 0 or self.ball_position.y >= int(ROWS / 2):
+                    if self.ball_position.y <= 0 or self.ball_position.y >= int(self.settings.get("notification_rows", 20) / 2):
                         self.ball_position = arcade.math.Vec2(0, self.ball_position.y)
                         self.ball_direction = self.ball_direction.reflect(arcade.math.Vec2(1, 0))
                     else:
                         self.score_b += 1
-                        self.ball_position = arcade.math.Vec2(int(COLS / 2), int(ROWS / 4))
+                        self.ball_position = arcade.math.Vec2(int(self.settings.get("notification_cols", 25) / 2), int(self.settings.get("notification_rows", 20) / 4))
                         self.ball_direction = arcade.math.Vec2(*random.choice([(-1, 1), (1, 1), (-1, 1), (-1, -1)]))
 
-                elif self.ball_position.x >= COLS:
-                    if self.ball_position.y <= 0 or self.ball_position.y >= int(ROWS / 2):
-                        self.ball_position = arcade.math.Vec2(COLS, self.ball_position.y)
+                elif self.ball_position.x >= self.settings.get("notification_cols", 25):
+                    if self.ball_position.y <= 0 or self.ball_position.y >= int(self.settings.get("notification_rows", 20) / 2):
+                        self.ball_position = arcade.math.Vec2(self.settings.get("notification_cols", 25), self.ball_position.y)
                         self.ball_direction = self.ball_direction.reflect(arcade.math.Vec2(-1, 0))
                     else:
                         self.score_a += 1
-                        self.ball_position = arcade.math.Vec2(int(COLS / 2), int(ROWS / 4))
+                        self.ball_position = arcade.math.Vec2(int(self.settings.get("notification_cols", 25) / 2), int(self.settings.get("notification_rows", 20) / 4))
                         self.ball_direction = arcade.math.Vec2(*random.choice([(-1, 1), (1, 1), (-1, 1), (-1, -1)]))
       
                 if self.ball_position.y <= 0:
                     self.ball_position = arcade.math.Vec2(self.ball_position.x, 0)
                     self.ball_direction = self.ball_direction.reflect(arcade.math.Vec2(0, 1))
-                elif self.ball_position.y >= int(ROWS / 2):
-                    self.ball_position = arcade.math.Vec2(self.ball_position.x, int(ROWS / 2))
+                elif self.ball_position.y >= int(self.settings.get("notification_rows", 20) / 2):
+                    self.ball_position = arcade.math.Vec2(self.ball_position.x, int(self.settings.get("notification_rows", 20) / 2))
                     self.ball_direction = self.ball_direction.reflect(arcade.math.Vec2(0, -1))
 
             text = ""
             
-            for y in range(int(ROWS / 2)):
-                for x in range(COLS):
+            for y in range(int(self.settings.get("notification_rows", 20) / 2)):
+                for x in range(self.settings.get("notification_cols", 25)):
                     if (x, y) == self.paddle_a_position or (x, y) == self.paddle_b_position:
                         text += "|"
                     elif self.ball_position == (x, y):
@@ -126,12 +127,12 @@ class Game(arcade.gui.UIView):
             self.window.show_view(Main(self.pypresence_client))
         elif symbol == arcade.key.R and not self.running:            
             self.paddle_a_direction = 0
-            self.paddle_a_position = arcade.math.Vec2(0, int(ROWS / 4))
+            self.paddle_a_position = arcade.math.Vec2(0, int(self.settings.get("notification_rows", 20) / 4))
 
             self.paddle_b_direction = 0
-            self.paddle_b_position = arcade.math.Vec2(COLS - 1, int(ROWS / 4))
+            self.paddle_b_position = arcade.math.Vec2(self.settings.get("notification_cols", 25) - 1, int(self.settings.get("notification_rows", 20) / 4))
 
-            self.ball_position = arcade.math.Vec2(int(COLS / 2), int(ROWS / 4))
+            self.ball_position = arcade.math.Vec2(int(self.settings.get("notification_cols", 25) / 2), int(self.settings.get("notification_rows", 20) / 4))
             self.ball_direction = arcade.math.Vec2(*random.choice([(-1, 1), (1, 1), (-1, 1), (-1, -1)]))
 
             self.running = True

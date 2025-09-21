@@ -7,9 +7,6 @@ menu_background_color = (30, 30, 47)
 log_dir = 'logs'
 discord_presence_id = 1417184787936055336
 
-ROWS = 20
-COLS = 25
-
 TETRIS_SHAPES = {
     "I":      [(0, 0), (1, 0), (2, 0), (3, 0)],
     "I_R1":   [(0, 0), (0, 1), (0, 2), (0, 3)],
@@ -37,6 +34,11 @@ slider_hover_style = UISliderStyle(bg=Color(49, 154, 54), unfilled_track=Color(1
 slider_style = {'normal': slider_default_style, 'hover': slider_hover_style, 'press': slider_hover_style, 'disabled': slider_default_style}
 
 settings = {
+    "Games": {
+        "Notification Timeout": {"type": "slider", "min": 0.1, "max": 3, "step": 0.1, "config_key": "notification_timeout", "default": 0.4},
+        "Notification Rows (Changing can break games!)": {"type": "slider", "min": 8, "max": 100, "config_key": "notification_rows", "default": 20},
+        "Notification Columns (Changing can break games!)": {"type": "slider", "min": 8, "max": 100, "config_key": "notification_cols", "default": 25}
+    },
     "Graphics": {
         "Window Mode": {"type": "option", "options": ["Windowed", "Fullscreen", "Borderless"], "config_key": "window_mode", "default": "Windowed"},
         "Resolution": {"type": "option", "options": ["1366x768", "1440x900", "1600x900", "1920x1080", "2560x1440", "3840x2160"], "config_key": "resolution"},
@@ -55,4 +57,4 @@ settings = {
     },
     "Credits": {}
 }
-settings_start_category = "Graphics"
+settings_start_category = "Games"

@@ -17,6 +17,9 @@ class Game(arcade.gui.UIView):
         self.running = True
         self.last_update_time = time.perf_counter()
 
+        with open("settings.json", "r") as file:
+            self.settings = json.load(file)
+
         if not os.path.exists("data.json"):
             self.data = {}
         else:
@@ -111,7 +114,7 @@ class Game(arcade.gui.UIView):
         self.shape_tuple = self.create_shape(int(10 / 2), 0, self.shape_to_place)
 
     def on_update(self, delta_time):
-        if self.running and time.perf_counter() - self.last_update_time >= 0.4:
+        if self.running and time.perf_counter() - self.last_update_time >= self.settings.get("notification_timeout", 0.4):
             self.last_update_time = time.perf_counter()
 
             self.move_shape(*self.shape_tuple, 0, 1)
@@ -174,6 +177,8 @@ class Game(arcade.gui.UIView):
             self.tiles_to_destroy = []
 
             self.spawn_shape()
+
+            self.info_label.text = "Use arrow keys or WASD to move the blocks\nThe game is shown inside notifications."
 
             self.running = True
         elif symbol == arcade.key.SPACE:

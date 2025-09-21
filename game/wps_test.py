@@ -2,7 +2,6 @@ import arcade, arcade.gui, time, random, os, json
 
 from plyer import notification
 
-from utils.constants import ROWS, COLS
 from utils.preload import words
 
 class Game(arcade.gui.UIView):
@@ -16,6 +15,9 @@ class Game(arcade.gui.UIView):
         self.info_label = self.anchor.add(arcade.gui.UILabel("Press keys inside this window to interact with the app\nYou can see the app inside notifications!", font_size=24, multiline=True))
 
         self.running = True
+
+        with open("settings.json", "r") as file:
+            self.settings = json.load(file)
 
         if not os.path.exists("data.json"):
             self.data = {}

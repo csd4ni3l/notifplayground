@@ -2,8 +2,6 @@ import arcade, arcade.gui, time, random, os, json
 
 from plyer import notification
 
-from utils.constants import ROWS, COLS
-
 class Game(arcade.gui.UIView):
     def __init__(self, pypresence_client):
         super().__init__()
@@ -18,8 +16,11 @@ class Game(arcade.gui.UIView):
         self.should_jump = False
         self.last_update_time = time.perf_counter()
 
+        with open("settings.json", "r") as file:
+            self.settings = json.load(file)
+
         self.pipes = []
-        self.bird_position = [0, int(ROWS / 2)]
+        self.bird_position = [0, int(self.settings.get("notification_rows", 20) / 2)]
         self.cycles = 0
 
         if not os.path.exists("data.json"):
@@ -38,25 +39,25 @@ class Game(arcade.gui.UIView):
         if pipe_type == "bottom":
             bottom = 0
         else:
-            bottom = ROWS - size
+            bottom = self.settings.get("notification_rows", 20) - size
         
-        left = COLS
+        left = self.settings.get("notification_cols", 25)
 
         for pipe_y in range(bottom, bottom + size):
             self.pipes.append([left, pipe_y])
 
     def create_pipe(self):
-        gap_size = ROWS // 5
-        gap_start = random.randint(1, ROWS - gap_size - 1) 
+        gap_size = self.settings.get("notification_rows", 20) // 5
+        gap_start = random.randint(1, self.settings.get("notification_rows", 20) - gap_size - 1) 
 
         bottom_height = gap_start
         self.create_pipe_part(bottom_height, "bottom")
 
-        top_height = ROWS - (gap_start + gap_size)
+        top_height = self.settings.get("notification_rows", 20) - (gap_start + gap_size)
         self.create_pipe_part(top_height, "top")
 
     def on_update(self, delta_time):
-        if self.running and time.perf_counter() - self.last_update_time >= 0.4:
+        if self.running and time.perf_counter() - self.last_update_time >= self.settings.get("notification_timeout", 0.4):
             self.pipes = [[pipe_x - 1, pipe_y] for pipe_x, pipe_y in self.pipes if pipe_x - 1 >= 0]
             
             if self.should_jump:
@@ -67,7 +68,7 @@ class Game(arcade.gui.UIView):
                 jumped = False
                 self.bird_position[1] += 2
 
-            if self.bird_position in self.pipes or self.bird_position[1] >= ROWS or self.bird_position[1] <= 0:
+            if self.bird_position in self.pipes or self.bird_position[1] >= self.settings.get("notification_rows", 20) or self.bird_position[1] <= 0:
                 self.info_label.text = "Game Over.\nPress r to restart"
                 self.running = False
 
@@ -87,8 +88,8 @@ class Game(arcade.gui.UIView):
 
             text = ""
 
-            for y in range(ROWS):
-                for x in range(COLS):
+            for y in range(self.settings.get("notification_rows", 20)):
+                for x in range(self.settings.get("notification_cols", 25)):
                     if [x, y] in self.pipes:
                         text += "|"
                     elif [x, y] == self.bird_position:
@@ -135,7 +136,7 @@ class Game(arcade.gui.UIView):
 
             self.last_update_time = time.perf_counter()
 
-            self.bird_position = [0, int(ROWS / 2)]
+            self.bird_position = [0, int(self.settings.get("notification_rows", 20) / 2)]
             self.cycles = 0
             self.should_jump = False
 

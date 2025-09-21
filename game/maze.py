@@ -1,8 +1,6 @@
-import arcade, arcade.gui, time, random
+import arcade, arcade.gui, time, random, json
 
 from plyer import notification
-
-from utils.constants import ROWS, COLS
 
 class Game(arcade.gui.UIView):
     def __init__(self, pypresence_client):
@@ -14,6 +12,9 @@ class Game(arcade.gui.UIView):
         self.anchor = self.add_widget(arcade.gui.UIAnchorLayout(size_hint=(1, 1)))
         self.info_label = self.anchor.add(arcade.gui.UILabel("Use arrow keys or WASD to move.\nMaze is shown in notifications.", font_size=24, multiline=True))
 
+        with open("settings.json", "r") as file:
+            self.settings = json.load(file)
+
         self.running = True
         self.time_start = time.perf_counter()
 
@@ -21,7 +22,7 @@ class Game(arcade.gui.UIView):
         self.direction = arcade.math.Vec2()
         
     def on_show_view(self):
-        self.maze, start_x, start_y = self.generate_maze(int(COLS / 2), int(ROWS / 2))
+        self.maze, start_x, start_y = self.generate_maze(int(self.settings.get("notification_cols", 25) / 2), int(self.settings.get("notification_rows", 20) / 2))
         self.current_position = arcade.math.Vec2(start_x, start_y)
         self.update()
 
@@ -82,7 +83,7 @@ class Game(arcade.gui.UIView):
 
             self.info_label.text = "Use arrow keys or WASD to move.\nMaze is shown in notifications."
             
-            self.maze, start_x, start_y = self.generate_maze(int(COLS / 3), int(ROWS / 3))
+            self.maze, start_x, start_y = self.generate_maze(int(self.settings.get("notification_cols", 25) / 3), int(self.settings.get("notification_rows", 20) / 3))
             self.current_position = arcade.math.Vec2(start_x, start_y)
             self.update()
 

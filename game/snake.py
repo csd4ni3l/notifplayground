@@ -2,8 +2,6 @@ import arcade, arcade.gui, time, random, os, json
 
 from plyer import notification
 
-from utils.constants import ROWS, COLS
-
 class Game(arcade.gui.UIView):
     def __init__(self, pypresence_client):
         super().__init__()
@@ -18,9 +16,12 @@ class Game(arcade.gui.UIView):
         self.running = True
         self.last_update_time = time.perf_counter()
 
-        self.snake = [(int(COLS / 2), int(ROWS / 2))]
+        with open("settings.json", "r") as file:
+            self.settings = json.load(file)
+
+        self.snake = [(int(self.settings.get("notification_cols", 25) / 2), int(self.settings.get("notification_rows", 20) / 2))]
         self.foods = []
-        
+
         if not os.path.exists("data.json"):
             self.data = {}
         else:
@@ -35,13 +36,13 @@ class Game(arcade.gui.UIView):
 
     def spawn_food(self):
         while True:
-            x, y = (random.randint(0, COLS), random.randint(0, ROWS))
+            x, y = (random.randint(0, self.settings.get("notification_cols", 25)), random.randint(0, self.settings.get("notification_rows", 20)))
 
             if not (x, y) in self.snake:
                 return (x, y)
 
     def on_update(self, dt):
-        if self.running and time.perf_counter() - self.last_update_time >= 0.4:
+        if self.running and time.perf_counter() - self.last_update_time >= self.settings.get("notification_timeout", 0.4):
             self.last_update_time = time.perf_counter()
 
             head_x, head_y = self.snake[0]
@@ -55,7 +56,7 @@ class Game(arcade.gui.UIView):
             elif self.direction == "down":
                 new_head = (head_x, head_y + 1)
 
-            if new_head in self.snake or not (0 <= new_head[0] < COLS and 0 <= new_head[1] < ROWS):
+            if new_head in self.snake or not (0 <= new_head[0] < self.settings.get("notification_cols", 25) and 0 <= new_head[1] < self.settings.get("notification_rows", 20)):
                 self.info_label.text = "Game Over.\nPress r to restart"
                 self.running = False
 
@@ -77,8 +78,8 @@ class Game(arcade.gui.UIView):
 
             text = ""
 
-            for y in range(ROWS):
-                for x in range(COLS):
+            for y in range(self.settings.get("notification_rows", 20)):
+                for x in range(self.settings.get("notification_cols", 25)):
                     if (x, y) == self.snake[0]:
                         text += "H"
                     elif (x, y) in self.snake[1:]:
@@ -116,7 +117,7 @@ class Game(arcade.gui.UIView):
             self.info_label.text = "Press keys inside this window to interact with the game.\nYou can see the game inside notifications."
             self.info_label.fit_content()
             
-            self.snake = [(int(COLS / 2), int(ROWS / 2))]
+            self.snake = [(int(self.settings.get("notification_cols", 25) / 2), int(self.settings.get("notification_rows", 20) / 2))]
             self.foods = [self.spawn_food() for _ in range(3)]
             self.running = True
         elif symbol == arcade.key.ESCAPE:
