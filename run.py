@@ -69,7 +69,7 @@ window = arcade.Window(width=resolution[0], height=resolution[1], title='NotifPl
 if vsync:
     window.set_vsync(True)
     display_mode = window.display.get_default_screen().get_mode()
-    refresh_rate = display_mode.rate if hasattr("display_mode", "rate") else 60
+    refresh_rate = display_mode.rate if hasattr(display_mode, "rate") else 60
     window.set_update_rate(1 / refresh_rate)
     window.set_draw_rate(1 / refresh_rate)
 elif not fps_limit == 0:
