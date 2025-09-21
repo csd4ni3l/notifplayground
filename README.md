@@ -1,4 +1,4 @@
-Games made inside notifications! Currently includes Flappy Bird, Maze, Pong, Space Invaders, Tetris and a WPS test!
+Games made inside notifications! Currently includes Flappy Bird, Maze, Pong, Space Invaders, Tetris, Hot Air Baloon and a WPS test!
 
 Some parts of Tetris are based on my other project, ShatterStack, which is a Block Blast style game.
 
