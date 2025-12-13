@@ -5,7 +5,7 @@ description = "NotifPlayground"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
- "arcade==3.2.0",
+ "arcade>=3.3.3",
  "plyer>=2.1.0",
  "pypresence>=4.3.0",
 ]
