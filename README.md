@@ -6,3 +6,8 @@ The whole thing is almost unusable on Windows due to Windows having such a high 
 
 If you can't try it out, Snake, for example looks like this:
 ![Demo](demo.gif)
+## Mirrors
+
+[![Forgejo](https://img.shields.io/badge/Forgejo-git.csd4ni3l.hu-1e90ff)](https://git.csd4ni3l.hu/csd4ni3l/notifplayground)
+[![GitHub](https://img.shields.io/badge/GitHub-github.com-181717)](https://github.com/csd4ni3l/notifplayground)
+[![Codeberg](https://img.shields.io/badge/Codeberg-codeberg.org-2185D0)](https://codeberg.org/csd4ni3l/notifplayground)
